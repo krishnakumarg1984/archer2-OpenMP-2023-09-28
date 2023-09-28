@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define NPOINTS 2000
+#define NPOINTS 8000
 #define MAXITER 2000
 
 struct complex
@@ -24,7 +24,7 @@ int main(void)
     struct complex z, c;
 
     double start = omp_get_wtime();
-
+#pragma omp parallel for default(none) private(z, c) reduction(+ : num_outside)
     for (int i = 0; i < NPOINTS; ++i)
     {
         for (int j = 0; j < NPOINTS; ++j)
@@ -48,12 +48,14 @@ int main(void)
     }
 
     double finish = omp_get_wtime();
+    int num_outside2 = num_outside;
+    printf("Num outside = %d\n", num_outside2);
 
     /*
      *  Calculate area and error and output the results
      */
 
-    double area = 2.0 * 2.5 * 1.125 * (double)(NPOINTS * NPOINTS - num_outside) / (double)(NPOINTS * NPOINTS);
+    double area = 2.0 * 2.5 * 1.125 * (double)(NPOINTS * NPOINTS - num_outside2) / (double)(NPOINTS * NPOINTS);
     double error = area / (double)NPOINTS;
 
     // printf("Area of Mandlebrot set = %12.8f +/- %12.8f\n", area, error);
