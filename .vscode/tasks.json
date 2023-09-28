@@ -11,6 +11,7 @@
         "command": "c",
         "args": [
           "${file}",
+          "-fopenmp",
           "-pedantic-errors", // disable compiler extensions
           "-pipe",
           "-std=c18",
@@ -113,6 +114,7 @@
       "linux": {
         "command": "gcc",
         "args": [
+          "-fopenmp",
           "-pedantic-errors", // disable compiler extensions
           "-pipe",
           "-std=c18",
@@ -194,6 +196,7 @@
       "linux": {
         "command": "clang",
         "args": [
+          "-fopenmp",
           "-pedantic-errors", // disable compiler extensions
           "-pipe",
           "-std=c18",

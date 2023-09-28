@@ -14,6 +14,7 @@ for dotfile in $dotfiles_in_prev_dir; do
   fi
 done
 
+touch .root
 ln -s ../.vscode . 2>/dev/null
 ln -s ../clean_builds.sh . 2>/dev/null
 ln -s ../CPPLINT.cfg . 2>/dev/null
