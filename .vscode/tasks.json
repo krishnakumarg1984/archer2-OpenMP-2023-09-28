@@ -191,6 +191,87 @@
       }
     },
     {
+      "label": "Compile file to executable with gcc (OpenMP Release build, C18 std)",
+      "type": "shell",
+      "linux": {
+        "command": "gcc",
+        "args": [
+          "-fopenmp",
+          "-pedantic-errors", // disable compiler extensions
+          "-pipe",
+          "-std=c18",
+          "-Wall",
+          "-Wcast-align",
+          "-Wcast-qual",
+          "-Wconversion",
+          "-Wdouble-promotion",
+          "-Wduplicated-branches", // not in clang
+          "-Wduplicated-cond", // not in clang
+          "-Wextra",
+          "-Wfloat-equal",
+          "-Wformat=2",
+          "-Wformat-signedness", // not in clang
+          "-Wformat-truncation=2",
+          "-Wframe-larger-than=5000",
+          "-Wjump-misses-init", // not in clang
+          "-Wlogical-op", // not in clang
+          "-Wmissing-prototypes",
+          "-Wnull-dereference",
+          // "-Wno-unused-parameter",
+          // "-Wno-unused-function",
+          // "-Wno-sign-conversion",
+          "-Wpedantic",
+          "-Wshadow",
+          "-Wshift-overflow=2", // default in clang
+          "-Wstack-usage=10000",
+          "-Wstrict-aliasing",
+          "-Wstrict-prototypes",
+          "-Wswitch-default",
+          "-Wswitch-enum",
+          "-Wsync-nand", // not in clang
+          "-Wtrampolines", // not in clang
+          "-Wundef",
+          "-Wunused",
+          "-Wunused-macros",
+          "-Wvla-larger-than=0",
+          "-O2",
+          // "-fanalyzer",
+          // "-fanalyzer-transitivity",
+          // "-fasynchronous-unwind-tables",
+          // "-fexceptions",
+          // "-fno-omit-frame-pointer",
+          // "-fno-sanitize-recover",
+          // "-fsanitize=address",
+          // // "-fsanitize=integer", // unrecognised (by gcc only?)
+          // "-fsanitize=float-cast-overflow",
+          // "-fsanitize=float-divide-by-zero",
+          // "-fsanitize=signed-integer-overflow",
+          // "-fsanitize=undefined",
+          // // "-fsanitize=trap", // unrecognised (by gcc only?)
+          // "-fstack-clash-protection",
+          // "-fstack-protector-all",
+          // "-fstack-protector-strong",
+          // "-fstrict-aliasing",
+          // "-fvisibility=hidden",
+          "-DNDEBUG",
+          "-DDBG_MACRO_DISABLE",
+          "-lm",
+          "${file}",
+          "-o",
+          "${fileDirname}/${fileBasenameNoExtension}.x"
+        ]
+      },
+      "options": {
+        "cwd": "${fileDirname}"
+      },
+      "problemMatcher": "$gcc",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+
+    {
       "label": "Compile file to executable with gcc (Serial Debug build, C18 std)",
       "type": "shell",
       "linux": {

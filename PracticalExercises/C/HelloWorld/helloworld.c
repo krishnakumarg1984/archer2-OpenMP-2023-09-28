@@ -5,6 +5,7 @@
 int main(void)
 {
     printf("Number of threads in serial region: %d\n", omp_get_num_threads());
+    printf("This is thread number: %d\n", omp_get_thread_num());
 
 #pragma omp parallel
     {
@@ -16,6 +17,7 @@ int main(void)
     }
 
     printf("Number of threads in serial region: %d\n", omp_get_num_threads());
+    printf("This is thread number: %d\n", omp_get_thread_num());
 
     return 0;
 }

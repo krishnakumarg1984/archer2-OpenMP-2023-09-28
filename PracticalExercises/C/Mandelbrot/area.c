@@ -21,27 +21,33 @@ int main(void)
      */
 
     int num_outside = 0;
-    struct complex z, c;
 
     double start = omp_get_wtime();
-#pragma omp parallel for default(none) private(z, c) reduction(+ : num_outside)
-    for (int i = 0; i < NPOINTS; ++i)
+    // #pragma omp parallel for default(none) private(z, c) reduction(+ : num_outside)
+#pragma omp parallel default(none) reduction(+ : num_outside)
     {
-        for (int j = 0; j < NPOINTS; ++j)
+        struct complex z, c;
+        int thread_id = omp_get_thread_num();
+        int outer_start_idx_thread = thread_id * (NPOINTS / omp_get_num_threads());
+        int outer_end_idx_thread = ((thread_id + 1) * (NPOINTS / omp_get_num_threads()));
+        for (int i = outer_start_idx_thread; i < outer_end_idx_thread; ++i)
         {
-            c.real = -2.0 + 2.5 * (double)(i) / (double)(NPOINTS) + 1.0e-7;
-            c.imag = 1.125 * (double)(j) / (double)(NPOINTS) + 1.0e-7;
-
-            z = c; // initialise
-            for (int iter = 0; iter < MAXITER; ++iter)
+            for (int j = 0; j < NPOINTS; ++j)
             {
-                double ztemp = (z.real * z.real) - (z.imag * z.imag) + c.real;
-                z.imag = z.real * z.imag * 2.0 + c.imag;
-                z.real = ztemp;
-                if ((z.real * z.real + z.imag * z.imag) > 4.0e0)
+                c.real = -2.0 + 2.5 * (double)(i) / (double)(NPOINTS) + 1.0e-7;
+                c.imag = 1.125 * (double)(j) / (double)(NPOINTS) + 1.0e-7;
+
+                z = c; // initialise
+                for (int iter = 0; iter < MAXITER; ++iter)
                 {
-                    ++num_outside;
-                    break;
+                    double ztemp = (z.real * z.real) - (z.imag * z.imag) + c.real;
+                    z.imag = z.real * z.imag * 2.0 + c.imag;
+                    z.real = ztemp;
+                    if ((z.real * z.real + z.imag * z.imag) > 4.0e0)
+                    {
+                        ++num_outside;
+                        break;
+                    }
                 }
             }
         }

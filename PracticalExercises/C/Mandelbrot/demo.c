@@ -5,16 +5,25 @@
 
 int main(void)
 {
-    int sum = 0;
-    const int n = 5;
+    // int sum = 0;
+    const int n = 12;
 
-#pragma omp parallel for default(none) shared(n) reduction(+ : sum)
-    for (int i = 0; i < n; ++i)
+#pragma omp parallel default(none) shared(n) // reduction(+ : sum)
     {
-        sum += i + 1;
+        int id = omp_get_thread_num();
+
+        int start_idx = id * n / omp_get_num_threads();
+        int end_idx = ((id + 1) * n / omp_get_num_threads()) - 1;
+
+        printf("Thread %d tackles index range [%d, %d]\n", id, start_idx, end_idx);
+
+        // for (int i = start_idx; i < end_idx; ++i)
+        // {
+        //     sum += i + 1;
+        // }
     }
 
-    printf("Sum = %d\n", sum);
+    // printf("Sum = %d\n", sum);
 
     return 0;
 }
